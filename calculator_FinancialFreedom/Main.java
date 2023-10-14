@@ -2,18 +2,17 @@ import java.text.NumberFormat;
 
 public class Main {
     public static void main(String[] args) {
-        
         // USER DEFINED
-        long initial_Investment = 1_000;
+        long initial_Investment = 40000;
         float salary = 5000f;
-        float monthlySalaryShare = 0.20f; // How much the user invests, as a % of the salary
+        float monthlySalaryShare = 0.15f; // How much the user invests, as a % of the salary
         float yield = 0.03f;
-        short investment_years = 10;
+        short investment_years = 20;
         String operation = "Net Worth"; // possible values: "Salary Share", "Yield", "Time", "Net Worth"
         
 
-        // final byte MONTHS_IN_YEARS = 12;
-        // double needed_netWorth = salary*MONTHS_IN_YEARS/yield; // The amount of money the user wishes to have at the end
+        final byte MONTHS_IN_YEARS = 12;
+        double needed_netWorth = salary*MONTHS_IN_YEARS/yield; // The amount of money the user wishes to have at the end
 
 
 
@@ -21,9 +20,8 @@ public class Main {
 
 
         switch (operation){
-            case "Net Worth":
+            case "Net Worth": // Calculating final Net Worth based on User Input
                 CompoundProjector netWorthObj = new CompoundProjector(initial_Investment, salary, monthlySalaryShare, yield, investment_years);
-
 
                 double result_end_Investment = netWorthObj.projectNetWorth();
 
@@ -33,16 +31,44 @@ public class Main {
                 System.out.println("Monthly Dividends: " + NumberFormat.getCurrencyInstance().format(monthlyDividends));
                 break;
 
-            case "Yield":
+            case "Yield": // Estimating Yield
+                float yieldFloor = 0.0f;
+                float yieldCeil = 2f;
+                float yieldTentative = 0.05f;
+                double tentative_result = 0;
+                double tentative_dividends = 0;
+                final byte ITER_MAX = 25;
 
-                CompoundProjector yieldOBJ = new CompoundProjector(initial_Investment, salary, monthlySalaryShare, yield, investment_years);
-                yieldOBJ.setInitial_Investment(initial_Investment);
-                yieldOBJ.setSalary(salary);
-                yieldOBJ.setMonthlySalaryShare(monthlySalaryShare);
-                yieldOBJ.setYield(yield);
-                yieldOBJ.setInvestment_years(investment_years);
-                
-                //System.out.println("Estimated Yield: " + guessYield);
+                yieldCase: {
+                    for(int i=0; i<=ITER_MAX; i++){
+                        CompoundProjector yieldOBJ = new CompoundProjector(initial_Investment, salary, monthlySalaryShare, yieldTentative, investment_years);
+                        tentative_result = yieldOBJ.projectNetWorth();
+                        tentative_dividends = yieldOBJ.projectDividends();
+
+                        if (needed_netWorth * 0.99999 < tentative_result && tentative_result < needed_netWorth * 1.00001){ // Almost Equals, with 0.02% Threshold
+                            System.out.println("This calculation took " + i + " iterations.");
+                            System.out.println("Estimated Yield: " + Math.round(yieldTentative * 10000)/100f + "%");
+                            System.out.println("Final Net Worth: " + NumberFormat.getCurrencyInstance().format(tentative_result));
+                            System.out.println("Monthly Dividends: " + NumberFormat.getCurrencyInstance().format(tentative_dividends));
+                            break yieldCase;
+                        }
+                        // Didn't find the correct value, 'binary search' the new yield
+                        if (tentative_result < needed_netWorth){
+                            yieldFloor = yieldTentative;
+                            yieldTentative = (yieldFloor + yieldCeil) / 2;
+                        }else{
+                            yieldCeil = yieldTentative;
+                            yieldTentative = (yieldFloor + yieldCeil) / 2;
+                        }
+                    }
+
+                    // Didn't find a satisfactory answer but we still need to 
+                    System.out.println("This calculation would take more than " + ITER_MAX + " iterations.");
+                    System.out.println("Estimated Yield: " + Math.round(yieldTentative * 100f) + "%");
+                    System.out.println("Final Net Worth: " + NumberFormat.getCurrencyInstance().format(tentative_result));
+                    System.out.println("Monthly Dividends: " + NumberFormat.getCurrencyInstance().format(tentative_dividends));
+                }
+
                 break;
             case "Time":
                 break;
