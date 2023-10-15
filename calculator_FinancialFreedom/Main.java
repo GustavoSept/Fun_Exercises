@@ -4,8 +4,9 @@ public class Main {
     public static void main(String[] args) {
         // USER DEFINED
         long initial_Investment = 40000;
-        float salary = 5000f;
-        float monthlySalaryShare = 0.15f; // How much the user invests, as a % of the salary
+        float salary_productiveYears = 7500f;
+        float salary_retiredYears = 5000f;
+        float monthlySalaryShare = 0.15f; // How much the user invests, as a % of the salary_productiveYears
         float yield_investment = 0.10f; // Yield Rate during investment period
         float yield_dividend = 0.03f; // Yield Rate after conquering Financial Freedom (recommend between 0.02 ~0.05)
         float investment_years = 20f;
@@ -13,7 +14,7 @@ public class Main {
         
 
         final byte MONTHS_IN_YEARS = 12;
-        final double NEEDED_NETWORTH = salary*MONTHS_IN_YEARS/yield_dividend; // The amount of money the user wishes to have at the end
+        final double NEEDED_NETWORTH = salary_retiredYears*MONTHS_IN_YEARS/yield_dividend; // The amount of money the user wishes to have at the end
 
 
 
@@ -24,7 +25,7 @@ public class Main {
 
         switch (operation){
             case "Net Worth": // Calculating final Net Worth based on User Input
-                CompoundProjector netWorthObj = new CompoundProjector(initial_Investment, salary, monthlySalaryShare, yield_investment, yield_dividend, investment_years);
+                CompoundProjector netWorthObj = new CompoundProjector(initial_Investment, salary_productiveYears, monthlySalaryShare, yield_investment, yield_dividend, investment_years);
 
                 double result_end_Investment = netWorthObj.projectNetWorth();
 
@@ -42,7 +43,7 @@ public class Main {
 
                 yieldCase: {
                     for(int i=0; i<=ITER_MAX; i++){
-                        CompoundProjector yieldOBJ = new CompoundProjector(initial_Investment, salary, monthlySalaryShare, yieldTentative, yield_dividend, investment_years);
+                        CompoundProjector yieldOBJ = new CompoundProjector(initial_Investment, salary_productiveYears, monthlySalaryShare, yieldTentative, yield_dividend, investment_years);
                         tentative_result = yieldOBJ.projectNetWorth();
                         tentative_dividends = yieldOBJ.projectDividends();
                         
@@ -79,7 +80,7 @@ public class Main {
 
                 timeCase: {
                     for(int i=0; i<=ITER_MAX; i++){
-                        CompoundProjector timeOBJ = new CompoundProjector(initial_Investment, salary, monthlySalaryShare, yield_investment, yield_dividend, timeTentative);
+                        CompoundProjector timeOBJ = new CompoundProjector(initial_Investment, salary_productiveYears, monthlySalaryShare, yield_investment, yield_dividend, timeTentative);
                         tentative_result = timeOBJ.projectNetWorth();
                         tentative_dividends = timeOBJ.projectDividends();
                         
@@ -115,7 +116,7 @@ public class Main {
 
                 shareCase: {
                     for(int i=0; i<=ITER_MAX; i++){
-                        CompoundProjector shareOBJ = new CompoundProjector(initial_Investment, salary, shareTentative, yield_investment, yield_dividend, investment_years);
+                        CompoundProjector shareOBJ = new CompoundProjector(initial_Investment, salary_productiveYears, shareTentative, yield_investment, yield_dividend, investment_years);
                         tentative_result = shareOBJ.projectNetWorth();
                         tentative_dividends = shareOBJ.projectDividends();                        
 
