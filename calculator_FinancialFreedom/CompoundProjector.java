@@ -4,12 +4,12 @@ public class CompoundProjector{
     private float monthlySalaryShare = 0f; // How much the user invests, as a % of the salary
     private float yield_investment = 0f;
     private float yield_dividend = 0f;
-    private short investment_years = 0;
+    private float investment_years = 0f;
     
     private final byte MONTHS_IN_YEARS = 12;
 
 
-    CompoundProjector(long initial_Investment, float salary, float monthlySalaryShare, float yield_investment, float yield_dividend, short investment_years){
+    CompoundProjector(long initial_Investment, float salary, float monthlySalaryShare, float yield_investment, float yield_dividend, float investment_years){
         this.initial_Investment = initial_Investment;
         this.salary = salary;
         this.monthlySalaryShare = monthlySalaryShare;
