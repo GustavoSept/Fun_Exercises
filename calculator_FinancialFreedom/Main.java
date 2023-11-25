@@ -6,8 +6,8 @@ public class Main {
         long initial_Investment = 40000;
         float salary_productiveYears = 7500f;
         float salary_retiredYears = 5000f;
-        float monthlySalaryShare = 0.15f; // How much the user invests, as a % of the salary_productiveYears
-        float yield_investment = 0.10f; // Yield Rate during investment period
+        float monthlySalaryShare = 0.15f; // How much the user invests, as a % of the salary_productiveYears (For most people, should be between 10% to 30%)
+        float yield_investment = 0.10f; // Yield Rate during investment period (realistic values for most people are 6~10% (after inflation). Best investors return is around 14~17%)
         float yield_dividend = 0.03f; // Yield Rate after conquering Financial Freedom (recommend between 0.02 ~0.05)
         float investment_years = 20f;
         String operation = "Salary Share"; // possible values: "Salary Share", "Yield", "Time", "Net Worth"
@@ -25,6 +25,8 @@ public class Main {
 
         switch (operation){
             case "Net Worth": // Calculating final Net Worth based on User Input
+                System.out.println("\n\n\nCalculating Final Net Worth...\n");
+
                 CompoundProjector netWorthObj = new CompoundProjector(initial_Investment, salary_productiveYears, monthlySalaryShare, yield_investment, yield_dividend, investment_years);
 
                 double result_end_Investment = netWorthObj.projectNetWorth();
@@ -36,6 +38,8 @@ public class Main {
                 break;
 
             case "Yield": // Estimating Yield
+                System.out.println("\n\n\nCalculating Annual Interest Yield...\n");
+
                 float yieldFloor = 0.0f;
                 float yieldCeil = 2f;
                 float yieldTentative = 0.05f;
@@ -74,6 +78,8 @@ public class Main {
 
                 break;
             case "Time":
+                System.out.println("\n\n\nCalculating Time for Financial Freedom...\n");
+
                 float timeFloor = 0.0f;
                 float timeCeil = 250f;
                 float timeTentative = 10f;
@@ -110,6 +116,8 @@ public class Main {
                 }
                 break;
             case "Salary Share":
+                System.out.println("\n\n\nCalculating how much of your Salary you'll need to save...\n");
+                
                 float shareFloor = 0.0f;
                 float shareCeil = 15f;
                 float shareTentative = 0.5f;
