@@ -4,13 +4,13 @@ public class Main {
     public static void main(String[] args) {
         // USER DEFINED
         long initial_Investment = 40000;
-        float salary_productiveYears = 3500f; // Salary during productive years, from which monthly investments come
-        float salary_retiredYears = 5000f; // Target salary after Financial Freedom, to receive as dividends
+        float salary_productiveYears = 7500f;
+        float salary_retiredYears = 5000f;
         float monthlySalaryShare = 0.15f; // How much the user invests, as a % of the salary_productiveYears
-        float yield_investment = 0.10f; // Yield Rate during investment period. (realistic values for most people is 6~10% yield [above inflation]. 14~18% is around what the best in the world can achieve)
-        float yield_dividend = 0.055f; // Yield Rate after conquering Financial Freedom (recommend between 0.02 ~0.05)
-        float investment_years = 25f;
-        String operation = "Yield"; // possible values: "Salary Share", "Yield", "Time", "Net Worth"
+        float yield_investment = 0.10f; // Yield Rate during investment period
+        float yield_dividend = 0.03f; // Yield Rate after conquering Financial Freedom (recommend between 0.02 ~0.05)
+        float investment_years = 20f;
+        String operation = "Salary Share"; // possible values: "Salary Share", "Yield", "Time", "Net Worth"
         
 
         final byte MONTHS_IN_YEARS = 12;
@@ -25,10 +25,6 @@ public class Main {
 
         switch (operation){
             case "Net Worth": // Calculating final Net Worth based on User Input
-                System.out.println("\n------------------------------------------------------------------------------------------");
-                System.out.println("Calculating Final Net Worth...");
-                System.out.println("------------------------------------------------------------------------------------------\n");
-
                 CompoundProjector netWorthObj = new CompoundProjector(initial_Investment, salary_productiveYears, monthlySalaryShare, yield_investment, yield_dividend, investment_years);
 
                 double result_end_Investment = netWorthObj.projectNetWorth();
@@ -40,10 +36,6 @@ public class Main {
                 break;
 
             case "Yield": // Estimating Yield
-                System.out.println("\n------------------------------------------------------------------------------------------");
-                System.out.println("Estimating Annual Interest Yield...");
-                System.out.println("------------------------------------------------------------------------------------------\n");
-
                 float yieldFloor = 0.0f;
                 float yieldCeil = 2f;
                 float yieldTentative = 0.05f;
@@ -82,10 +74,6 @@ public class Main {
 
                 break;
             case "Time":
-                System.out.println("\n------------------------------------------------------------------------------------------");
-                System.out.println("Calculating Time to achieve freedom...");
-                System.out.println("------------------------------------------------------------------------------------------\n");
-
                 float timeFloor = 0.0f;
                 float timeCeil = 250f;
                 float timeTentative = 10f;
@@ -116,16 +104,12 @@ public class Main {
 
                     // Didn't find a satisfactory answer but we still need to 
                     System.out.println("This calculation would take more than " + ITER_MAX + " iterations.");
-                    System.out.println("Estimated Time: " + Math.round(timeTentative * 100)/100f + " years.");
+                    System.out.println("Estimated Years: " + Math.round(timeTentative * 100)/100f);
                     System.out.println("Final Net Worth: " + NumberFormat.getCurrencyInstance().format(tentative_result));
                     System.out.println("Monthly Dividends: " + NumberFormat.getCurrencyInstance().format(tentative_dividends));
                 }
                 break;
             case "Salary Share":
-                System.out.println("\n------------------------------------------------------------------------------------------");
-                System.out.println("Calculating how much from your salary you'll need to save...");
-                System.out.println("------------------------------------------------------------------------------------------\n");
-
                 float shareFloor = 0.0f;
                 float shareCeil = 15f;
                 float shareTentative = 0.5f;
