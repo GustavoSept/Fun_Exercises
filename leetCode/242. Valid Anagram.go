@@ -12,6 +12,12 @@ func main() {
 	fmt.Println(response)
 }
 
+// NOTES ABOUT THE SOLUTION:
+// This is my first attempt to the problem.
+// Beats 39.16% of solutions in Runtime, and 24.78% in memory usage.
+//
+// We can do better by using only one map to determine anagramism. Or by sorting them like arrays.
+
 func isAnagram(s, t string) bool {
 	// Can't be anagram if lengths are different
 	if len(s) != len(t) {
